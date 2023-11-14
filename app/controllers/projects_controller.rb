@@ -19,13 +19,22 @@ class ProjectsController < ApplicationController
   end
 # -----------------------CREATE-------------------------
   def create
-    @project = Project.new(project_params)
 
-    if @project.save
-      redirect_to projects_path, notice: "Gracefully Created"
+    result = CreateProject.call(project_params: project_params)
+
+    if result.success?
+      redirect_to result.project, notice: result.message
+
     else
-      render :new, status: :unprocessable_entity
+      redirect_to new_project_path, alert: result.message
     end
+    # @project = Project.new(project_params)
+
+    # if @project.save
+    #   redirect_to projects_path, notice: "Gracefully Created"
+    # else
+    #   render :new, status: :unprocessable_entity
+    # end
   end
 
 # -----------------------UPDATE------------------
@@ -65,6 +74,8 @@ class ProjectsController < ApplicationController
       redirect_to projects_path(@project), notice: result.message
     end
   end
+
+
 
   private
 

@@ -46,7 +46,7 @@
 
   <div class="field form-group">
     <%= form.label :completion_status %>
-    <%= form.check_box :completion_status %>
+   <%= form.select :status, Assignment.status.values %>
   </div>
 
  <div class="field form-group">

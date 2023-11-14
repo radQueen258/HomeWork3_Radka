@@ -139,7 +139,7 @@ class AssignmentsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def assignment_params
-      params.require(:assignment).permit(:assignment_name, :description, :deadline, :completion_status, :user_id, :project_id)
+      params.require(:assignment).permit(:assignment_name, :description, :deadline, :status, :user_id, :project_id)
     end
 
     private
