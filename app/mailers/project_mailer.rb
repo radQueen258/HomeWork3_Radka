@@ -1,17 +1,17 @@
 class ProjectMailer < ApplicationMailer
-  def project_created(project, user)
+  def project_created(project, current_user)
     @project = project
 
-    mail(to: user.email)
+    mail(to: current_user.email)
   end
 
-  def project_updated(project, user)
+  def project_updated(project, current_user)
     @project = project
 
-    mail(to: user.email)
+    mail(to: current_user.email)
   end
 
-  def project_destroyed(user)
-    mail(to: user.email)
+  def project_destroyed(current_user)
+    mail(to: current_user.email)
   end
 end

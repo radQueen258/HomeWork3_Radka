@@ -1,7 +1,7 @@
 class CreateProject
   include Interactor::Organizer
 
-  delegate :project, :user, to: :context
+  delegate :project, :current_user, to: :context
 
   organize PrepareParams1, SaveProject
 
@@ -10,7 +10,7 @@ class CreateProject
   # end
 
   after do
-    ProjectMailer.project_created(project, user).deliver_later
+    ProjectMailer.project_created(project, current_user).deliver_later
     Projects::CreateDefaultAssignmentsJob.perform_async(project.id)
   end
 
