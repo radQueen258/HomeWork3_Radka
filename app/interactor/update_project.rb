@@ -1,7 +1,8 @@
 class UpdateProject
   include Interactor
+  include Sidekiq::Worker
 
-  delegate :project, :user, to: :context
+  delegate :project, :current_user, to: :context
 
   def call
     project = context.project
@@ -10,12 +11,16 @@ class UpdateProject
     if project.update(updated_attributes)
       context.project = project
       context.message = "Project Gracefully Updated"
+
     else
       context.fail!(message: "Failed to update the project")
     end
   end
 
-  def update_project_email
-    ProjectMailer.project_updated(project, user).deliver_later
+  after do
+    ProjectMailer.project_updated(project, current_user).deliver_later
+    Projects::UpdatedProjectJob.perform_async(project.id)
   end
+
+
 end

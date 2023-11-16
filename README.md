@@ -11,3 +11,6 @@ for each user the email will be shown on the top right side of the navigation ba
 No user is allowed to see other user's projects or tasks thus not being able to edit or delete them
 
 A comment section was added, now the user is able to comment on each assignment (create, edit and destroy)
+
+
+There is a problem with the html that is interfering with my update

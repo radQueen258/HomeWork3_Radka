@@ -15,12 +15,12 @@ class ProjectsController < ApplicationController
     @project = Project.new
   end
 
-  def edit
-  end
-# -----------------------CREATE-------------------------
+  # def edit
+  # end
+# -----------------------CREATE------------------------
   def create
 
-    result = CreateProject.call(project_params: project_params)
+    result = CreateProject.call(project_params: project_params, current_user: current_user)
 
     if result.success?
       redirect_to result.project, notice: result.message
@@ -28,45 +28,28 @@ class ProjectsController < ApplicationController
     else
       redirect_to new_project_path, alert: result.message
     end
-    # @project = Project.new(project_params)
 
-    # if @project.save
-    #   redirect_to projects_path, notice: "Gracefully Created"
-    # else
-    #   render :new, status: :unprocessable_entity
-    # end
   end
 
 # -----------------------UPDATE------------------
   def update
     @project = Project.find(params[:id])
     updated_attributes = project_params
-    result = UpdateProject.call(project: @project, updated_attributes: updated_attributes)
+    result = UpdateProject.call(project: @project, updated_attributes: updated_attributes, current_user: current_user)
 
     if result.success?
       redirect_to projects_path, notice: result.message
     else
       redirect_to projects_path(@project), notice: result.message
     end
-    # if @project.update(project_params)
-    #   redirect_to projects_path, notice: "Gracefully Updated"
-    # else
-    #   render :edit, status: :unprocessable_entity
-    # end
+
   end
 
 # ----------------DELETE-----------------------
   def destroy
-    # @project.destroy
     @project = Project.find(params[:id])
-    # @project.assignments.each do |assignment|
-    #   assignment.comments.destroy_all
-    # end
-    # @project.assignments.destroy_all
-    # @project.destroy
-    # redirect_to projects_path, notice: "Gracefully Deleted"
 
-    result = DeleteProject.call(project: @project)
+    result = DeleteProject.call(project: @project, current_user: current_user)
 
     if result.success?
       redirect_to projects_path, notice: result.message
