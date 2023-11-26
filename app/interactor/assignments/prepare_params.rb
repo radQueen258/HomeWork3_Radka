@@ -1,3 +1,4 @@
+module Assignments
 class PrepareParams
   include Interactor
 
@@ -8,4 +9,5 @@ class PrepareParams
 
     context.validated_params = assignment_params
   end
+end
 end

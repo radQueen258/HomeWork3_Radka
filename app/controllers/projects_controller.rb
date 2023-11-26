@@ -20,7 +20,7 @@ class ProjectsController < ApplicationController
 # -----------------------CREATE------------------------
   def create
 
-    result = CreateProject.call(project_params: project_params, current_user: current_user)
+    result = Projects::CreateProject.call(project_params: project_params, current_user: current_user)
 
     if result.success?
       redirect_to result.project, notice: result.message
@@ -35,7 +35,7 @@ class ProjectsController < ApplicationController
   def update
     @project = Project.find(params[:id])
     updated_attributes = project_params
-    result = UpdateProject.call(project: @project, updated_attributes: updated_attributes, current_user: current_user)
+    result = Projects::UpdateProject.call(project: @project, updated_attributes: updated_attributes, current_user: current_user)
 
     if result.success?
       redirect_to projects_path, notice: result.message
@@ -49,7 +49,7 @@ class ProjectsController < ApplicationController
   def destroy
     @project = Project.find(params[:id])
 
-    result = DeleteProject.call(project: @project, current_user: current_user)
+    result = Projects::DeleteProject.call(project: @project, current_user: current_user)
 
     if result.success?
       redirect_to projects_path, notice: result.message

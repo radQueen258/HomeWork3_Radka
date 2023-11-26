@@ -46,34 +46,23 @@ class AssignmentsController < ApplicationController
 
   # POST /assignments or /assignments.json
   def create
-    #@assignment = Assignment.new(assignment_params)
-    # @assignment = current_user.assignments.build(assignment_params) L
-    # @assignment = Assignment.new(assignment_params)   L
-    # @assignment.created_at = Time.zone.now  L
-    # @assignment = Assignment.find(assignment_params[:project_id])
-    # @assignment.project = @project
 
-    # respond_to do |format|
+    project = Project.find(assignment_params[:project_id]) # Fetch the project
+    user = current_user
 
-
-    #   if @assignment.save
-    #     format.html { redirect_to assignment_url(@assignment), notice: "Assignment gracefully created." }
-    #     format.json { render :show, status: :created, location: @assignment }
-    #   else
-    #     format.html { render :new, status: :unprocessable_entity }
-    #     format.json { render json: @assignment.errors, status: :unprocessable_entity }
-    #   end
-    # end
-
-    result = CreateAssignment.call(
-      user: current_user,
+    result = Assignments::CreateAssignment.call(
+      current_user: user,
       project_id: assignment_params[:project_id],
       assignment_params: assignment_params
     )
 
     if result.success?
       @assignment = result.assignment
+      user = current_user
+      project = Project.find(assignment_params[:project_id])
+      AssignmentMailer.assignment_created(project, result.assignment, user).deliver_later
       redirect_to assignment_url(result.assignment), notice: result.message
+      #redirect_to assignment_url(result.assignment), notice: result.message
     else
       @assignment = Assignment.new(assignment_params)
       redirect_to assignment_url(@assignment), alert: result.message
@@ -84,37 +73,20 @@ class AssignmentsController < ApplicationController
   def update
     @assignment = Assignment.find(params[:id])
     updated_attributes = assignment_params
-    result = UpdateAssignment.call(assignment: @assignment, updated_attributes: updated_attributes)
+    result = Assignments::UpdateAssignment.call(assignment: @assignment, updated_attributes: updated_attributes, current_user: current_user)
 
     if result.success?
       redirect_to assignment_url(@assignment), notice: result.message
     else
       redirect_to assignment_url(@assignment), notice: result.message
     end
-
-    # respond_to do |format|
-    #   if @assignment.update(assignment_params)
-    #     format.html { redirect_to assignment_url(@assignment), notice: "Assignment gracefully updated." }
-    #     format.json { render :show, status: :ok, location: @assignment }
-    #   else
-    #     format.html { render :edit, status: :unprocessable_entity }
-    #     format.json { render json: @assignment.errors, status: :unprocessable_entity }
-    #   end
-    # end
   end
 
   # DELETE /assignments/1 or /assignments/1.json
   def destroy
-    # @assignment.destroy
-
-    # respond_to do |format|
-    #   format.html { redirect_to assignments_url, notice: "Assignment gracefully destroyed." }
-    #   format.json { head :no_content }
-    # end
-    # @project = Project.find(params[:project_id])
     @assignment = Assignment.find(params[:id])
 
-    result = DeleteAssignment.call(assignment: @assignment)
+    result = Assignments::DeleteAssignment.call(assignment: @assignment, current_user: current_user)
 
     if result.success?
       redirect_to projects_path(@project), notice: result.message

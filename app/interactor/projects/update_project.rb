@@ -1,3 +1,4 @@
+module Projects
 class UpdateProject
   include Interactor
   include Sidekiq::Worker
@@ -21,6 +22,5 @@ class UpdateProject
     ProjectMailer.project_updated(project, current_user).deliver_later
     Projects::UpdatedProjectJob.perform_async(project.id)
   end
-
-
+end
 end

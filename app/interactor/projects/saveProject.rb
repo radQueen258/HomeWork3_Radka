@@ -1,3 +1,4 @@
+module Projects
 class SaveProject
   include Interactor
 
@@ -12,4 +13,5 @@ class SaveProject
       context.fail!(message: "Failed to create a project")
     end
   end
+end
 end

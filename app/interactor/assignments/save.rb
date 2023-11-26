@@ -1,3 +1,4 @@
+module Assignments
 class Save
   include Interactor
 
@@ -12,4 +13,5 @@ class Save
     end
 
   end
+end
 end

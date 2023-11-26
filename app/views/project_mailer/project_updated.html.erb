@@ -1,10 +1,7 @@
-<h1>Your project updated</h1>
-<% @project.attributes.each do |attr| %>
-  <ul>
-    <li><%= attr.join(': ') %></li>
-  </ul>
-<% end %>
 
-<% @project.attributes.each do |attr_name, attr_value| %>
-  <%= "#{attr_name}: #{attr_value}" %>
-<% end %>
+<h1>Your project was updated</h1>
+<ul>
+  <% @project.attributes.each do |attr_name, attr_value| %>
+    <li><strong><%= attr_name %>:</strong> <%= attr_value %></li>
+  <% end %>
+</ul>

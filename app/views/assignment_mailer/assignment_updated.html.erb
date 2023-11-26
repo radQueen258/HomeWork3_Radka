@@ -1,0 +1,6 @@
+<h1>Your assignment was updated</h1>
+<% @assignment.attributes.each do |attr| %>
+  <ul>
+    <li><%= attr.join(': ') %></li>
+  </ul>
+<% end %>
