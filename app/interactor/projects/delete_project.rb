@@ -1,7 +1,6 @@
  module Projects
  class DeleteProject
   include Interactor
-  include Sidekiq::Worker
 
   delegate :project, :current_user, to: :context
 
