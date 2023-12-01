@@ -16,7 +16,6 @@
 
   after do
     ProjectMailer.project_destroyed(current_user).deliver_later
-    Projects::DeletedProjectJob.perform_async(project.id)
   end
 
  end

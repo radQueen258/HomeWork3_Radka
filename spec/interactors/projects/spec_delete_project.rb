@@ -1,28 +1,36 @@
 require 'rails_helper'
 
-Rspec.describe Projects::DeleteProject, type: :interactor do
-  let(:current_user) { FactoryBot.create(:user) }
+RSpec.describe Projects::DeleteProject do
 
-  it 'user creation' do
-    sign_in current_user
-  end
-
-  let(:project) { FactoryBot.create(:project) }
-
-  subject(:context) {Projects::DeleteProject.call(project: project, current_user: current_user) }
+  subject(:context) {Projects::DeleteProject.call(project: project) }
 
   describe '.call' do
+  let(:interactor) {described_class.new(project: project)}
+  let(:project) { FactoryBot.create(:project) }
+
+
     context 'when deletion of the project is successfull' do
         it 'deletes the project' do
-        expect { context }.to change(Project, :count).by(-1)
+        expect { interactor.run }.to change(Project, :count).from(1).to(0)
         end
 
        it 'prints a success message' do
-        expect(context.message).to eq('Project Gracefullt Deleted')
+        expect(context.message).to eq('Project Gracefully Deleted')
+       end
+
+       before do
+        allow(Projects::DeletedProjectJob).to receive(:perform_async).with(project.id)
+        allow(ProjectMailer).to receive(:project_destroyed).and_call_original
+
+        @current_user = FactoryBot.create(:user)
+        allow(interactor).to receive(:current_user).and_return(@current_user)
+
        end
 
         it 'triggers ProjectMailer.project_destroyed' do
-        expect(Projects::DeletedProjectJob).to receive(:perform_async).with(project.id)
+          expect(ProjectMailer).to receive(:project_destroyed).and_return(double(deliver_later: true)).with(@current_user)
+          interactor.run
+
         end
     end
 
@@ -46,4 +54,5 @@ Rspec.describe Projects::DeleteProject, type: :interactor do
       context
     end
   end
+end
 end
