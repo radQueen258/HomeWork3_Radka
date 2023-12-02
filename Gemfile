@@ -19,9 +19,11 @@ gem "turbolinks", "~> 5"
 gem "jbuilder", "~> 2.7"
 gem 'kaminari'
 gem "pry"
+gem "jwt"
 gem 'enumerize'
 gem 'interactor'
 gem "sidekiq"
+gem "active_model_serializers"
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 # Use Active Model has_secure_password
@@ -37,6 +39,7 @@ gem 'action_policy'
 
 group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
+  gem "dotenv-rails"
   gem "rubocop", require: false
   gem "rubocop-i18n", require: false
   gem "rubocop-minitest", require: false

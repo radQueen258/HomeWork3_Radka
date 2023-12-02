@@ -27,6 +27,7 @@ class AssignmentsController < ApplicationController
     when 'deadline'
       @assignments = @assignments.order(deadline: :asc)
     end
+
   end
 
   # GET /assignments/1 or /assignments/1.json
@@ -62,7 +63,6 @@ class AssignmentsController < ApplicationController
       project = Project.find(assignment_params[:project_id])
       AssignmentMailer.assignment_created(project, result.assignment, user).deliver_later
       redirect_to assignment_url(result.assignment), notice: result.message
-      #redirect_to assignment_url(result.assignment), notice: result.message
     else
       @assignment = Assignment.new(assignment_params)
       redirect_to assignment_url(@assignment), alert: result.message

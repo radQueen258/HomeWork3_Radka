@@ -3,6 +3,20 @@ require "sidekiq/web"
 Rails.application.routes.draw do
   mount Sidekiq::Web => "/sidekiq"
 
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :projects, only: %i[index create]
+    end
+  end
+
+  namespace :api, defaults: { format: :json } do
+    namespace :v1 do
+      resources :projects do
+        resources :assignments, only: %i[index create]
+      end
+    end
+  end
+
   devise_for :users
   resources :assignments
   #get 'home/index'

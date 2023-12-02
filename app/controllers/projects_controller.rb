@@ -3,11 +3,15 @@ class ProjectsController < ApplicationController
 
   def index
     @projects = Project.order(params[:sort]).page(params[:page]).per(3)
+
+    #render json: @projects, each_serializer: ProjectSerializer
   end
 
   def show
     @project = Project.find(params[:id])
     authorize! @project, to: :show
+
+    #render json: @project, serializer: ProjectSerializer
   end
 
 
