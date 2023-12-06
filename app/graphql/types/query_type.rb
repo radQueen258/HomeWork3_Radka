@@ -27,7 +27,14 @@ module Types
     # def test_field
     #   "Hello World!"
     # end
-    field :project, resolver: Resolvers::Project
-    field :projects, resolver: Resolvers::Projects
+
+    # field :project, resolver: Resolvers::Project
+    # field :projects, resolver: Resolvers::Projects
+
+    field :projects, [Types::ProjectType], null: false
+
+    def projects
+      Project.all
+    end
   end
 end

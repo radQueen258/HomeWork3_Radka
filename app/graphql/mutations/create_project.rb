@@ -1,12 +1,21 @@
 module Mutations
   class CreateProject < BaseMutation
 
-    def resolve(input)
-      result = Projects::Create.call(
-        project_params: input,
-        user: current_user)
+    argument :input, Types::Inputs::CreateProjectInput, required: true
 
-      result.success? ? result.project : nil
+
+    type Types::Payloads::ProjectPayload
+
+    def resolve(input:)
+      current_user = context[:current_user]
+      result = Projects::CreateProject.call(project_params: input.to_h, current_user: current_user)
+
+      if result.success?
+        result
+      else
+        result.to_h.merge(errors: formatted_errors(result.project))
+      end
+
     end
   end
 end
