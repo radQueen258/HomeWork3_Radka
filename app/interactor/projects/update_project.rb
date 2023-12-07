@@ -2,14 +2,12 @@ module Projects
 class UpdateProject
   include Interactor
 
-  delegate :project, :current_user, :project_params, to: :context
+  delegate :project,:current_user, :project_params, to: :context
 
   def call
-    # project = context.project
-    # updated_attributes = context.updated_attributes
 
     if project.update(project_params)
-      # context.project = project
+
       context.message = "Project Gracefully Updated"
 
     else

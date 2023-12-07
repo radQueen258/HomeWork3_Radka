@@ -5,8 +5,8 @@ class CreateProject
 
   delegate :project, :current_user, to: :context
 
-  organize Projects::PrepareParams1, Projects::SaveProject
-
+  organize Projects::SaveProject
+# Projects::PrepareParams1,
   after do
     ProjectMailer.project_created(project, current_user).deliver_later
     Projects::CreateDefaultAssignmentsJob.perform_async(project.id)

@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
   before_action :set_project, only: %i[show edit update destroy]
 
   def index
-    @projects = Project.order(params[:sort]).page(params[:page]).per(3)
+    @projects = Project.order(params[:sort]).page(params[:page]).per(5)
 
     #render json: @projects, each_serializer: ProjectSerializer
   end
@@ -38,8 +38,8 @@ class ProjectsController < ApplicationController
 # -----------------------UPDATE------------------
   def update
     @project = Project.find(params[:id])
-    updated_attributes = project_params
-    result = Projects::UpdateProject.call(project: @project, updated_attributes: updated_attributes, current_user: current_user)
+    # updated_attributes = project_params
+    result = Projects::UpdateProject.call(project: @project, project_params: project_params, current_user: current_user)
 
     if result.success?
       redirect_to projects_path, notice: result.message

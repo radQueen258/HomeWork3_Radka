@@ -1,17 +1,39 @@
+# module Projects
+# class SaveProject
+#   include Interactor
+
+#   def call
+#     project = Project.new(context.validated_params)
+
+#     if project.save
+#       context.project = project
+#       context.message = "Project Gracefully created"
+
+#     else
+#       context.fail!(message: "Failed to create a project")
+#     end
+#   end
+# end
+# end
+
 module Projects
-class SaveProject
-  include Interactor
+  class SaveProject
+    include Interactor
 
-  def call
-    project = Project.new(context.validated_params)
+    delegate :project_params, to: :context
 
-    if project.save
+    def call
       context.project = project
-      context.message = "Project Gracefully created"
 
-    else
-      context.fail!(message: "Failed to create a project")
+      context.fail!(error: "Invalid data") unless project.save
+
+    end
+
+    private
+
+      def project
+        @project ||= Project.new(project_params)
+      end
+
     end
   end
-end
-end
