@@ -3,7 +3,7 @@ class Assignment < ApplicationRecord
 
   enumerize :status, in: %i[Not_Started Started Finished], default: :Not_Started
 
-  belongs_to :user
+  # belongs_to :user
   belongs_to :project
   has_many :comments
 

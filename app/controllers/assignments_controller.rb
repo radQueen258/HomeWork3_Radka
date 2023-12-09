@@ -56,13 +56,11 @@ class AssignmentsController < ApplicationController
       project_id: assignment_params[:project_id],
       assignment_params: assignment_params
     )
-
+    @assignment = result.assignment
     if result.success?
-      @assignment = result.assignment
-      user = current_user
-      project = Project.find(assignment_params[:project_id])
-      AssignmentMailer.assignment_created(project, result.assignment, user).deliver_later
-      redirect_to assignment_url(result.assignment), notice: result.message
+
+      #AssignmentMailer.assignment_created(project, result.assignment, user).deliver_later
+      redirect_to assignment_url(@assignment), notice: result.message
     else
       @assignment = Assignment.new(assignment_params)
       redirect_to assignment_url(@assignment), alert: result.message

@@ -6,14 +6,20 @@ module Mutations
 
     def resolve(input:)
       current_user = context[:current_user]
-      project_id = Project.find(assignment_params[:project_id])
-      result = Assignments::CreateAssignment.call(current_user: current_user, project_id: project_id, assignment_params: input.to_h)
+      input_params = input.to_h
+      project_id = Project.find_by(input_params.delete(:id))
 
-      if result.success?
-        result
-      else
-        result.to_h.merge(errors: formatted_errors(result.assignment))
-      end
+      result = Assignments::CreateAssignment.call(current_user: current_user,
+        project_id: project_id, assignment_params: input_params)
+
+        if result.success?
+
+          # Ensure that result.assignment is not nil before calling formatted_errors
+          errors = result.assignment ? formatted_errors(result.assignment) : []
+          result.to_h.merge(errors: errors)
+        else
+          result.to_h.merge(errors: result.errors)
+        end
     end
   end
 end
