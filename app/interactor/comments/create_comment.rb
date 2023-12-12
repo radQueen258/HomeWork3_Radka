@@ -1,3 +1,4 @@
+module Comments
 class CreateComment
   include Interactor
 
@@ -18,4 +19,5 @@ class CreateComment
         context.fail!(message: "Failed to create the comment")
     end
   end
+end
 end

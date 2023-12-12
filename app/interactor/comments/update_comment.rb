@@ -1,3 +1,4 @@
+module Comments
 class UpdateComment
   include Interactor
 
@@ -12,4 +13,5 @@ class UpdateComment
       context.fail!(message: "Failed to update the comment" )
    end
  end
+end
 end

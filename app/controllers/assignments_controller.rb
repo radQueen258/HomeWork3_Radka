@@ -33,6 +33,22 @@ class AssignmentsController < ApplicationController
   # GET /assignments/1 or /assignments/1.json
   def show
 
+  #   assignment = Assignment.find(params[:id])
+
+  #   # Check if the current_user has permission to view this assignment
+  #   if current_user_can_access_assignment?(assignment)
+  #     render json: assignment
+  #   else
+  #     render json: { error: "You don't have permission to access this assignment" }, status: :unauthorized
+  #   end
+  # end
+
+  # private
+
+  # def current_user_can_access_assignment?(assignment)
+  #   assignment.project.user_id == current_user.id
+  # end
+
   end
 
   # GET /assignments/new

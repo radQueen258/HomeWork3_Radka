@@ -35,7 +35,7 @@
 
   <tbody>
     <% @assignments.each do |assignment| %>
-      <%if assignment.user == current_user%>
+      <%if assignment.user_id == current_user.id%>
       <tr>
         <td><%= assignment.project_id%></td>
         <td>

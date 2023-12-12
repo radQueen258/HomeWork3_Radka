@@ -7,5 +7,6 @@ module Types
     field :delete_project, mutation: Mutations::DeleteProject
 
     field :create_assignment, mutation: Mutations::CreateAssignment
+    field :update_comment, mutation: Mutations::UpdateComment
   end
 end
